@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:HashGen.ViewModels"xmlns:viewmodels="using:HashGen.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+             x:Class="HashGen.Views.MainView"
+             x:DataType="vm:MainViewModel"
+			 x:Name="MainViewControl">
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainViewModel />
+	</Design.DataContext>
+	<Grid>
+
+		<TextBlock Text="{Binding SaveDataCommand, StringFormat='SaveDataCommand exists: {0}'}"
+                   IsVisible="False"/>
+		
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<TextBox Grid.Column="0"
+				 Grid.Row="0"
+				 Margin="5" 
+				 Text="{Binding Login}"/>
+		<Label Grid.Column="1"
+			   Grid.Row="0"
+			   Margin="5"
+			   Content="Введите логин"
+			   />
+		
+		<TextBox Grid.Column="0" 
+				 Grid.Row="1" 
+				 Margin="5"
+				 Text="{Binding Password, Mode=TwoWay}"/>
+		<Button Grid.Column="1" 
+				Grid.Row="1" 
+				Margin="5" 
+				Content="Generate Password"
+				Command="{Binding GeneratePasswordCommand}"/>
+
+		<TextBox Grid.Column="0" 
+				 Grid.Row="2" 
+				 Margin="5" 
+				 Text="{Binding Salt, Mode=TwoWay}"/>
+		<Button Grid.Column="1"
+				Grid.Row="2" 
+				Margin="5" 
+				Content="Generate Salt"
+				Command="{Binding GenerateSaltCommand}"/>
+
+		<Button Grid.Column="0" 
+				Grid.Row="3" 
+				Margin="5" 
+				Content="Generate Hash"
+				Command="{Binding GenerateHashCommand}"/>
+
+		<StackPanel Grid.Column="0" Grid.Row="4" Margin="5" Orientation="Horizontal">
+			<TextBlock Margin="5" Text="Hashed Login: "/>
+			<TextBox Margin="5"
+					 Text="{Binding HashedLogin, Mode=OneWay}"
+					 IsReadOnly="True"
+					 Background="Transparent"
+					 BorderThickness="0"/>
+		</StackPanel>
+
+		<StackPanel Grid.Column="0" Grid.Row="5" Margin="5" Orientation="Horizontal">
+			<TextBlock Margin="5" Text="Hashed Password: "/>
+			<TextBox Margin="5"
+					 Text="{Binding HashedPassword, Mode=OneWay}"
+					 IsReadOnly="True"
+					 Background="Transparent"
+					 BorderThickness="0"/>
+		</StackPanel>
+		
+		<Button Grid.Column="0"
+				Grid.Row="6"
+				Margin="5"
+				Content="Save Data"
+				Command="{Binding SaveDataCommand}"/>
+	</Grid>
+</UserControl>
