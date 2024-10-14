@@ -12,6 +12,8 @@ using HashGen.Services;
 using static HashGen.Helpers.MessageBoxHelper;
 
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace HashGen.ViewModels;
 public partial class MainViewModel : ViewModelBase
@@ -33,7 +35,11 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private string _hashedPassword = string.Empty;
 
-    private readonly JsonSerializerOptions options = new() { WriteIndented = true };
+    private readonly JsonSerializerOptions options = new()
+    {
+        WriteIndented = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
 
     public MainViewModel()
     {

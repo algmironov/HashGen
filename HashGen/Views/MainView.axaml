@@ -121,6 +121,7 @@
 
 					<TextBox Margin="5"
 						 Text="{Binding HashedLogin, Mode=OneWay}"
+						 FontFamily="Consolas"
 						 HorizontalAlignment="Stretch"
 						 IsReadOnly="True"
 						 Background="Transparent"
@@ -143,6 +144,7 @@
 					<TextBox
 							 Margin="5"
 							 Text="{Binding HashedPassword, Mode=OneWay}"
+							 FontFamily="Consolas"
 							 HorizontalAlignment="Stretch"
 							 IsReadOnly="True"
 							 Background="Transparent"
