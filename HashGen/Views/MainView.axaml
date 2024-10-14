@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:HashGen.ViewModels"
-			 Height="400" Width="450" 
+			 MinHeight="400" MinWidth="450"
 			 xmlns:viewmodels="using:HashGen.ViewModels"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="400"
              x:Class="HashGen.Views.MainView"
@@ -15,7 +15,7 @@
             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
         -->
 		<vm:MainViewModel />
-		
+
 	</Design.DataContext>
 
 	<UserControl.Styles>
@@ -52,108 +52,119 @@
 			</StackPanel>
 
 		</Grid>
-	<Grid Grid.Row="1">
+		<Grid Grid.Row="1" HorizontalAlignment="Stretch">
 
-		<TextBlock Text="{Binding SaveDataCommand, StringFormat='SaveDataCommand exists: {0}'}"
-                   IsVisible="False"/>
-		
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="Auto"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+			<TextBlock Text="{Binding SaveDataCommand, StringFormat='SaveDataCommand exists: {0}'}"
+					   IsVisible="False"/>
 
-		<TextBox Grid.Column="0"
-				 Grid.Row="0"
-				 Margin="5" 
-				 Text="{Binding Login}"/>
-		
-		<Label Grid.Column="1"
-			   Grid.Row="0"
-			   Margin="5"
-			   VerticalContentAlignment="Center"
-			   Content="Input Login"
-			   />
-		
-		<TextBox Grid.Column="0" 
-				 Grid.Row="1" 
-				 Margin="5"
-				 Text="{Binding Password, Mode=TwoWay}"/>
-		
-		<Button Grid.Column="1" 
-				Grid.Row="1" 
-				Margin="5" 
-				Content="Generate Password"
-				Command="{Binding GeneratePasswordCommand}"/>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-		<TextBox Grid.Column="0" 
-				 Grid.Row="2" 
-				 Margin="5" 
-				 Text="{Binding Salt, Mode=TwoWay}"/>
-		
-		<Button Grid.Column="1"
-				Grid.Row="2" 
-				Margin="5" 
-				Content="Generate Salt"
-				Command="{Binding GenerateSaltCommand}"/>
-
-		<Button Grid.Column="0" 
-				Grid.Row="3" 
-				Margin="5" 
-				Content="Generate Hash"
-				Command="{Binding GenerateHashCommand}"/>
-
-		<StackPanel Grid.Column="0" Grid.Row="4" Margin="5" Orientation="Horizontal">
-			
-			<TextBlock 
-					 Margin="5" 
-					 VerticalAlignment="Bottom"
-					 Text="Hashed Login: "/>
-			
-			<TextBox Margin="5"
-					 Text="{Binding HashedLogin, Mode=OneWay}"
-					 IsReadOnly="True"
-					 Background="Transparent"
-					 BorderThickness="0"/>
-		</StackPanel>
-
-		<StackPanel Grid.Column="0" Grid.Row="5" Margin="5" Orientation="Horizontal">
-			
-			<TextBlock 
-					 Margin="5" 
-					 Text="Hashed Password:" 
-					 VerticalAlignment="Bottom"/>
-			
-			<TextBox 
+			<TextBox Grid.Column="0"
+					 Grid.Row="0"
 					 Margin="5"
-					 Text="{Binding HashedPassword, Mode=OneWay}"
-					 IsReadOnly="True"
-					 Background="Transparent"
-					 BorderThickness="0"/>
-		</StackPanel>
+					 Text="{Binding Login}"/>
 
-		<StackPanel Grid.Row="6" Margin="5" Orientation="Horizontal">
-			
-			<Button 
-				Margin="5"
-				Content="Save Data"
-				Command="{Binding SaveDataCommand}"/>
+			<Label Grid.Column="1"
+				   Grid.Row="0"
+				   Margin="5"
+				   VerticalContentAlignment="Center"
+				   Content="Input Login"
+			   />
 
-			<Button 
-				Margin="5"
-				Content="Clear"
-				Command="{Binding ClearDataCommand}"/>
-			
-		</StackPanel>
-		
-	</Grid>
+			<TextBox Grid.Column="0"
+					 Grid.Row="1"
+					 Margin="5"
+					 Text="{Binding Password, Mode=TwoWay}"/>
+
+			<Button Grid.Column="1"
+					Grid.Row="1"
+					Margin="5"
+					Content="Generate Password"
+					Command="{Binding GeneratePasswordCommand}"/>
+
+			<TextBox Grid.Column="0"
+					 Grid.Row="2"
+					 Margin="5"
+					 Text="{Binding Salt, Mode=TwoWay}"/>
+
+			<Button Grid.Column="1"
+					Grid.Row="2"
+					Margin="5"
+					Content="Generate Salt"
+					Command="{Binding GenerateSaltCommand}"/>
+
+			<Button Grid.Column="0"
+					Grid.Row="3"
+					Margin="5"
+					Content="Generate Hash"
+					Command="{Binding GenerateHashCommand}"/>
+
+			<StackPanel Grid.Column="0" Grid.Row="4" Margin="5" Orientation="Vertical" HorizontalAlignment="Stretch">
+
+				<TextBlock
+						 Margin="5"
+						 VerticalAlignment="Center"
+						 Text="Hashed Login: "/>
+				<ScrollViewer HorizontalScrollBarVisibility="Auto">
+
+					<TextBox Margin="5"
+						 Text="{Binding HashedLogin, Mode=OneWay}"
+						 HorizontalAlignment="Stretch"
+						 IsReadOnly="True"
+						 Background="Transparent"
+						 BorderThickness="0"/>
+
+				</ScrollViewer>
+
+
+			</StackPanel>
+
+			<StackPanel Grid.Column="0" Grid.Row="5" Margin="5" Orientation="Vertical" HorizontalAlignment="Stretch">
+
+				<TextBlock
+						 Margin="5"
+						 Text="Hashed Password:"
+						 VerticalAlignment="Center"/>
+
+				<ScrollViewer HorizontalScrollBarVisibility="Auto">
+
+					<TextBox
+							 Margin="5"
+							 Text="{Binding HashedPassword, Mode=OneWay}"
+							 HorizontalAlignment="Stretch"
+							 IsReadOnly="True"
+							 Background="Transparent"
+							 BorderThickness="0"/>
+				</ScrollViewer>
+
+			</StackPanel>
+
+			<StackPanel Grid.Row="6" Margin="5" Orientation="Horizontal">
+
+				<Button
+					Margin="5"
+					Content="Save Data"
+					Command="{Binding SaveDataCommand}"/>
+
+				<Button
+					Margin="5"
+					Content="Clear"
+					Command="{Binding ClearDataCommand}"/>
+
+			</StackPanel>
+
+		</Grid>
 	</Grid>
 </UserControl>
