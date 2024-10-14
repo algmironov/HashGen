@@ -7,10 +7,27 @@
 		Height="450"
 		Width="550"
 		WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="400"
+        mc:Ignorable="d" 
+		d:DesignWidth="550" 
+		d:DesignHeight="400"
+		Background="Transparent"
+		TransparencyLevelHint="AcrylicBlur"
+		ExtendClientAreaToDecorationsHint="True"
         x:Class="HashGen.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="HashGen">
 
-	<views:MainView />
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					MaterialOpacity="0.85"
+					TintColor="Black"
+					TintOpacity="1" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<views:MainView />
+	</Panel>
+	
 </Window>

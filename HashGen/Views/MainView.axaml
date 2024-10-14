@@ -17,7 +17,42 @@
 		<vm:MainViewModel />
 		
 	</Design.DataContext>
-	<Grid>
+
+	<UserControl.Styles>
+		<Style Selector="Border.Result">
+			<Style.Animations>
+				<Animation Duration="0:0:0.5">
+					<KeyFrame Cue="0%">
+						<Setter Property="Opacity" Value="0.0" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="1.0" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid Margin="8" RowDefinitions="Auto,*">
+		<Grid
+            Grid.Row="0"
+            Margin="4"
+            ColumnDefinitions="*,Auto">
+			<StackPanel Grid.Column="0">
+				<TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Medium"
+                    Text="HashGen" />
+				<TextBlock
+                    Grid.Row="1"
+                    FontSize="10"
+                    FontWeight="Light"
+                    Text="Hash Generator for Login and Password" />
+			</StackPanel>
+
+		</Grid>
+	<Grid Grid.Row="1">
 
 		<TextBlock Text="{Binding SaveDataCommand, StringFormat='SaveDataCommand exists: {0}'}"
                    IsVisible="False"/>
@@ -44,7 +79,8 @@
 		<Label Grid.Column="1"
 			   Grid.Row="0"
 			   Margin="5"
-			   Content="Введите логин"
+			   VerticalContentAlignment="Center"
+			   Content="Input Login"
 			   />
 		
 		<TextBox Grid.Column="0" 
@@ -76,7 +112,12 @@
 				Command="{Binding GenerateHashCommand}"/>
 
 		<StackPanel Grid.Column="0" Grid.Row="4" Margin="5" Orientation="Horizontal">
-			<TextBlock Margin="5" Text="Hashed Login: "/>
+			
+			<TextBlock 
+					 Margin="5" 
+					 VerticalAlignment="Bottom"
+					 Text="Hashed Login: "/>
+			
 			<TextBox Margin="5"
 					 Text="{Binding HashedLogin, Mode=OneWay}"
 					 IsReadOnly="True"
@@ -85,8 +126,14 @@
 		</StackPanel>
 
 		<StackPanel Grid.Column="0" Grid.Row="5" Margin="5" Orientation="Horizontal">
-			<TextBlock Margin="5" Text="Hashed Password: "/>
-			<TextBox Margin="5"
+			
+			<TextBlock 
+					 Margin="5" 
+					 Text="Hashed Password:" 
+					 VerticalAlignment="Bottom"/>
+			
+			<TextBox 
+					 Margin="5"
 					 Text="{Binding HashedPassword, Mode=OneWay}"
 					 IsReadOnly="True"
 					 Background="Transparent"
@@ -107,5 +154,6 @@
 			
 		</StackPanel>
 		
+	</Grid>
 	</Grid>
 </UserControl>
