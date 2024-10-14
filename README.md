@@ -12,9 +12,9 @@ More of that, I wanted to save this data in `json` file so I've made a feature f
 
 ## Install the app
 
-In the release section there is a compiled version of the app with .tar extension. Just download it, unpack and launch `HashGen.Desktop.exe` 
+In the [Release](https://github.com/algmironov/HashGen/releases) section there is a compiled version of the app with `.tar` extension. Just download it, unpack and launch `HashGen.Desktop.exe` 
 
-If you want to change an algorythm of hashing:
+### If you want to change an algorythm of hashing:
 - download/clone source code
 - proceed to `MainVewModel.cs` 
 - chage the algorhytm in GenerateHash method.
