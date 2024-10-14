@@ -1,74 +1,53 @@
 ﻿using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 
 using HashGen.Models;
 using HashGen.Services;
+using static HashGen.Helpers.MessageBoxHelper;
 
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace HashGen.ViewModels;
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
+    private readonly IFileService? _fileService;
+
+    [ObservableProperty]
     private string _login = string.Empty;
+
+    [ObservableProperty]
     private string _password = string.Empty;
+
+    [ObservableProperty]
     private string _salt = string.Empty;
+
+    [ObservableProperty]
     private string _hashedLogin = string.Empty;
+
+    [ObservableProperty]
     private string _hashedPassword = string.Empty;
-    private readonly IFileService _fileService;
 
-    public string Login
+    private readonly JsonSerializerOptions options = new() { WriteIndented = true };
+
+    public MainViewModel()
     {
-        get { return _login; }
-        set { _login = value; OnPropertyChanged(nameof(Login)); }
+
     }
 
-    public string Password
+    public MainViewModel(IFileService fileService) : this()
     {
-        get { return _password; }
-        set { _password = value; OnPropertyChanged(nameof(Password)); }
-    }
-
-    public string Salt
-    {
-        get { return _salt; }
-        set { _salt = value; OnPropertyChanged(nameof(Salt)); }
-    }
-
-    public string HashedLogin
-    {
-        get { return _hashedLogin; }
-        set { _hashedLogin = value; OnPropertyChanged(nameof(HashedLogin)); }
-    }
-
-    public string HashedPassword
-    {
-        get { return _hashedPassword; }
-        set { _hashedPassword = value; OnPropertyChanged(nameof(HashedPassword)); }
-    }
-
-    public ICommand GeneratePasswordCommand { get; }
-    public ICommand GenerateSaltCommand { get; }
-    public ICommand GenerateHashCommand { get; }
-    public ICommand SaveDataCommand { get; }
-
-    public MainViewModel(IFileService fileService)
-    {
-        GeneratePasswordCommand = new RelayCommand(GeneratePassword);
-        GenerateSaltCommand = new RelayCommand(GenerateSalt);
-        GenerateHashCommand = new RelayCommand(GenerateHash);
-        SaveDataCommand = new AsyncRelayCommand(SaveDataAsync);
         _fileService = fileService;
     }
 
+    [RelayCommand]
     private async Task SaveDataAsync()
     {
-        // Create a new instance of UserData
         UserData userData = new()
         {
             Login = Login,
@@ -78,49 +57,75 @@ public class MainViewModel : ViewModelBase
             HashedPassword = HashedPassword
         };
 
-        string json = JsonSerializer.Serialize(userData, new JsonSerializerOptions() { WriteIndented = true });
-        await _fileService.SaveFileAsync(json);
+        string json = JsonSerializer.Serialize(userData, options);
+        var isSuccess = await _fileService.SaveFileAsync(json);
 
+        if (isSuccess)
+        {
+            await ShowMessage("Файл с данными успешно сохранен!", Helpers.MessageBoxType.Success);
+        }
+        else
+        {
+            await ShowMessage("Не удалось сохранить файл с данными!", Helpers.MessageBoxType.Error);
+        }
     }
 
+    [RelayCommand]
+    private void ClearData()
+    {
+        Login = "";
+        Password = "";
+        Salt = "";
+        HashedLogin = "";
+        HashedPassword = "";
+    }
+
+    [RelayCommand]
     private void GeneratePassword()
     {
-        // Generate a random password
         Password = Guid.NewGuid().ToString("N")[..12];
     }
 
+    [RelayCommand]
     private void GenerateSalt()
     {
-        // Generate a random salt
         byte[] saltBytes = new byte[16];
-        using (var rng = RandomNumberGenerator.Create())
+        using (var range = RandomNumberGenerator.Create())
         {
-            rng.GetBytes(saltBytes);
+            range.GetBytes(saltBytes);
         }
         Salt = Convert.ToBase64String(saltBytes);
     }
 
-    private void GenerateHash()
+    [RelayCommand]
+    private async Task GenerateHash()
     {
-        byte[] saltBytes = Convert.FromBase64String(Salt);
+        try
+        {
+            byte[] saltBytes = Convert.FromBase64String(Salt);
 
-        byte[] hashedLogin = KeyDerivation.Pbkdf2(
-            password: Login,
-            salt: saltBytes,
-            prf: KeyDerivationPrf.HMACSHA1,
-            iterationCount: 1000,
-            numBytesRequested: 256 / 8
-        );
+            byte[] hashedLogin = KeyDerivation.Pbkdf2(
+                password: Login,
+                salt: saltBytes,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8
+            );
 
-        byte[] hashedPassword = KeyDerivation.Pbkdf2(
-            password: Password,
-            salt: saltBytes,
-            prf: KeyDerivationPrf.HMACSHA1,
-            iterationCount: 1000,
-            numBytesRequested: 256 / 8
-        );
+            byte[] hashedPassword = KeyDerivation.Pbkdf2(
+                password: Password,
+                salt: saltBytes,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8
+            );
 
-        HashedLogin = Convert.ToBase64String(hashedLogin);
-        HashedPassword = Convert.ToBase64String(hashedPassword);
+            HashedLogin = Convert.ToBase64String(hashedLogin);
+            HashedPassword = Convert.ToBase64String(hashedPassword);
+        }
+        catch (Exception ex)
+        {
+            await ShowMessage($"Возникла ошибка: {ex} ", Helpers.MessageBoxType.Error);
+        }
     }
 }

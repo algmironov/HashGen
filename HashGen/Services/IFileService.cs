@@ -4,6 +4,6 @@ namespace HashGen.Services
 {
     public interface IFileService
     {
-        public Task SaveFileAsync(string userData);
+        public Task<bool> SaveFileAsync(string userData);
     }
 }

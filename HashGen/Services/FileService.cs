@@ -1,49 +1,31 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
+using static HashGen.Helpers.StorageProviderHelper;
 
 namespace HashGen.Services
 {
-    public class FileService: IFileService
+    public class FileService : IFileService
     {
-        private readonly Window _target;
         private readonly string _fileName = "userData.json";
 
-        public FileService(Window target)
+        public async Task<bool> SaveFileAsync(string userData)
         {
-            _target = target;
-        }
+            var destination = await OpenFolderPickerAsync("Выберите папку для сохранения данных");
 
-        public async Task SaveFileAsync(string userData)
-        {
-            //var file = await _target.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-            //{
-            //    Title = "Куда сохранить файл",
-            //    DefaultExtension = "json",
-
-            //});
-
-            //if (file is not null)
-            //{
-            //    await using var stream = await file.OpenWriteAsync();
-            //    using var streamWriter = new StreamWriter(stream);
-            //    await streamWriter.WriteLineAsync(userData);
-            //    return ;
-            //}
-
-            var destination = await _target.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            try
             {
-                AllowMultiple = false,
-                SuggestedFileName = "userData.json",
-                Title = "Выберите папку для сохранения файла"
-            });
-
-            if (destination is not null && destination.Count > 0)
+                if (destination is not null)
+                {
+                    var fileToSave = Path.Combine(destination.Path.LocalPath, _fileName);
+                    await File.WriteAllTextAsync(fileToSave, userData, System.Text.Encoding.UTF8);
+                }
+                return true;
+            }
+            catch (Exception)
             {
-                var fileToSave = Path.Combine(destination[0].Path.AbsolutePath.ToString(), _fileName);
-                await File.WriteAllTextAsync(fileToSave, userData, System.Text.Encoding.UTF8);
+                return false;
             }
         }
     }
