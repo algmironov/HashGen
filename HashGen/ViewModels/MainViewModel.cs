@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-
 using HashGen.Models;
 using HashGen.Services;
-using static HashGen.Helpers.MessageBoxHelper;
 
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Text;
-using System.Text.Encodings.Web;
+
+using static HashGen.Helpers.MessageBoxHelper;
 
 namespace HashGen.ViewModels;
 public partial class MainViewModel : ViewModelBase
