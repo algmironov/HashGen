@@ -1,6 +1,8 @@
 # HashGen
 ### A simple hash generator for testing purposes
 
+> Для просмотра Readme на русском посмотрите файл [README.RU.md](README.RU.md)
+
 ## About
 
 HashGen was created to test algorhytm of hashing data before saving it to server. I wanted to be sure that the algorythm with make the same results for multiple times.
@@ -20,7 +22,8 @@ If you want to change an algorythm of hashing:
 ## Using app
 
 After launch following window will be opened:
-![MainWindow]()
+
+![MainWindow](img/empty_window.png)
 
 Filling fields:
 1) Input your login
@@ -29,6 +32,9 @@ Filling fields:
 4) Press the button Generate Hash => HashedLogin and HashedPassword fields will be filled by geenerated data.
 5) (Optional) You may save your data to `json` file by clicking `Save Data` => choose destination in opened window and follow to desired folder. After that `UserData.json` will be saved there.
 
+Final view will look like:
+
+![Result](img/filled_window.png)
 ## Licence
 
 This project has an `MIT` license.
